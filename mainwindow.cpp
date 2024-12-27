@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "model/logomodel.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
@@ -21,7 +22,7 @@
 #include <QFileDialog>
 #include <QBuffer>
 #include <QtCore/QIODevice>
-
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -216,13 +217,10 @@ void MainWindow::onFinished()
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (!jsonDoc.isNull()) {
             QJsonObject jsonObj = jsonDoc.object();
-//            qDebug() << "JSON Response:" << jsonObj;
+            qDebug() << "JSON Response:" << jsonObj;
             // 获取result_num和result数组
             int resultNum = jsonObj.value("result_num").toInt();
             QJsonArray resultArray = jsonObj.value("result").toArray();
-
-            // 清空logoList（如果需要）
-            logoList.clear();
 
             // 遍历result数组，解析每个logo信息并存储到logoList中
             for (int i = 0; i < resultNum; ++i) {
@@ -237,15 +235,23 @@ void MainWindow::onFinished()
                 int height = locationObj.value("height").toInt();
 
                 // 创建Logo对象并添加到logoList中
-                Logo logo;
-                logo.setName(name);
+                logoModel logo;
+                logo.setLogoName(name);
                 logo.setType(type);
                 logo.setProbability(probability);
-                logo.setLeft(left);
-                logo.setTop(top);
+                logo.setLeftPosition(left);
+                logo.setTopPosition(top);
                 logo.setWidth(width);
                 logo.setHeight(height);
-                logoList.append(logo);
+
+                // 获取当前时间的QDateTime对象
+                QDateTime currentDateTime = QDateTime::currentDateTime();
+                // 获取当前时间的秒时间戳
+                qint64 secondTimestamp = currentDateTime.toSecsSinceEpoch();
+                logo.setRecognitionTime (QString::number(secondTimestamp));
+
+                //加入列表
+                logolist.append(logo);
             }
         } else {
             qDebug() << "无效json响应";

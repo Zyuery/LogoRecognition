@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include "model/logomodel.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
@@ -29,6 +29,8 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -44,6 +46,10 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    //声明logolist
+    QList<logoModel> logolist;
+
+
 //请求参数
     //参数
     QString access_token;
