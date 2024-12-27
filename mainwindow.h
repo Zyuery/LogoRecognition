@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QSqlDatabase>
 #include <QMainWindow>
 #include <QString>
@@ -8,7 +11,6 @@
 #include <QObject>
 #include <QDebug>
 #include <QRadioButton>
-#include <QObject>
 #include <QCoreApplication>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>

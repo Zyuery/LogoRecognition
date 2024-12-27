@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QSqlDatabase>
 #include <QDebug>
 #include <QRadioButton>
@@ -95,7 +97,6 @@ MainWindow::MainWindow(QWidget *parent)
                 // 设置 POST 请求的参数
                 QUrlQuery postData;
                 postData.addQueryItem("image", urlEncodedBase64);
-//                qDebug()<<urlEncodedBase64;
                 QByteArray data = postData.toString(QUrl::FullyEncoded).toUtf8();// 转换为 QByteArray
                 reply = manager->post(request, data);// 发送 POST 请求
                 // 连接请求的 finished 信号，处理返回的数据
@@ -209,18 +210,48 @@ void MainWindow::onFinished()
 {
     if (reply) {
         QByteArray responseData = reply->readAll();  // 获取响应内容
-        qDebug() << "Response:" << responseData;
+//        qDebug() << "Response:" << responseData;
 
         // 处理 JSON 响应（如果需要）
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (!jsonDoc.isNull()) {
             QJsonObject jsonObj = jsonDoc.object();
-            qDebug() << "JSON Response:" << jsonObj;
+//            qDebug() << "JSON Response:" << jsonObj;
+            // 获取result_num和result数组
+            int resultNum = jsonObj.value("result_num").toInt();
+            QJsonArray resultArray = jsonObj.value("result").toArray();
+
+            // 清空logoList（如果需要）
+            logoList.clear();
+
+            // 遍历result数组，解析每个logo信息并存储到logoList中
+            for (int i = 0; i < resultNum; ++i) {
+                QJsonObject logoObj = resultArray[i].toObject();
+                QString name = logoObj.value("name").toString();
+                int type = logoObj.value("type").toInt();
+                double probability = logoObj.value("probability").toDouble();
+                QJsonObject locationObj = logoObj.value("location").toObject();
+                int left = locationObj.value("left").toInt();
+                int top = locationObj.value("top").toInt();
+                int width = locationObj.value("width").toInt();
+                int height = locationObj.value("height").toInt();
+
+                // 创建Logo对象并添加到logoList中
+                Logo logo;
+                logo.setName(name);
+                logo.setType(type);
+                logo.setProbability(probability);
+                logo.setLeft(left);
+                logo.setTop(top);
+                logo.setWidth(width);
+                logo.setHeight(height);
+                logoList.append(logo);
+            }
         } else {
             qDebug() << "无效json响应";
         }
-        reply->deleteLater();  // 在不需要时删除 reply 对象
-        reply = nullptr;  // 清空 reply 指针
+        reply->deleteLater();  // 在不需要时删除reply对象
+        reply = nullptr;  // 清空reply指针
     }
 }
 
