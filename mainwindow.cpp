@@ -13,8 +13,10 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QSslSocket>
-
-
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QBuffer>
+#include <QtCore/QIODevice>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -43,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
 //  postData.addQueryItem("image", imageBase64); // Base64 编码后的图片数据
 
 
+
 //一、决定传参方法
     //监听单选框
     QRadioButton *radioButton = ui->radioButton;
@@ -60,25 +63,120 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
+
 //二、监听发送请求
+
+    //监听用户导入图片
+    QPushButton *selectbutton = ui->selectButton;
+    QLabel *imagelabel = ui->imageLabel;
+    connect(selectbutton,&QPushButton::clicked,this,[=](){
+
+        QString fileName = QFileDialog::getOpenFileName(this, "选择图片", QString(), "Images (*.png *.jpg *.bmp)");
+
+        // 获取文件类型并检查是否为支持的格式
+        QString mimeType = QFileInfo(fileName).suffix().toLower();
+        if (!(mimeType == "png" || mimeType == "jpg" || mimeType == "bmp")) {
+            QMessageBox::warning(this, "错误", "不支持的图片格式！请使用PNG、JPG或BMP格式");
+            return;
+        }
+
+        if (fileName.isEmpty()) {
+            QMessageBox::critical(this, "错误提示","文件不合法！");
+            return;  // 用户取消选择，退出函数
+        }
+
+        //检查图片大小是否符合条件
+        QFileInfo fileInfo(fileName);
+        if (fileInfo.size() > 4 * 1024 * 1024) {  // 大小超过4MB
+            QMessageBox::warning(this, "错误", "图片大小不能超过4MB");
+            return;
+        }
+
+        // 加载图片
+        QImage image(fileName);
+        if (image.isNull()) {
+            QMessageBox::warning(this, "无效图片", "加载图片失败");
+            return;  // 图片加载失败，退出函数
+        }
+
+        //检查图片大小是否符合规范
+        int width = image.width();
+        int height = image.height();
+        if (width < 15 || height < 15) {
+            QMessageBox::warning(this, "错误", "图片的最短边必须至少15px");
+            return;
+        }
+        if (width > 4096 || height > 4096) {
+            QMessageBox::warning(this, "错误", "图片的最长边不能超过4096px");
+            return;
+        }
+
+        qDebug() << "图片文件路径：" << fileName;
+        // 显示图片
+        imagelabel->setPixmap(QPixmap::fromImage(image));
+
+
+
+
+        // 将图片转换为Base64编码
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+        if(mimeType == "png"){
+            image.save(&buffer, "PNG");
+        }
+        else if( mimeType == "jpg"){
+            image.save(&buffer, "JPG");
+        }
+        else{
+            image.save(&buffer, "BMP");
+        }
+
+        QByteArray base64Data = byteArray.toBase64();
+        qDebug() << "33333333333333333333333"<< base64Data;
+        QString base64String = base64Data.mid(base64Data.indexOf("base64,") + 7); // 提取有效的Base64编码部分
+        qDebug() << "555555555555"<< base64String;
+
+        // 确保Base64字符串有效
+        if (base64String.isEmpty()) {
+            QMessageBox::warning(this, "错误", "Base64编码失败！");
+            return;
+        }
+        // URL编码
+         urlEncodedBase64 = QUrl::toPercentEncoding(base64String);
+         if(urlEncodedBase64.isEmpty()){
+             qDebug() << "urlEncodedBase64为空";
+         }
+    });
 
     //监听查询请求发送的按钮searchButton
     QPushButton *searchbutton = ui->searchButton;
     connect(searchbutton,&QPushButton::clicked,this,[=]{
         if(method==0){//传base64
-
-        }
-        else if(method==1){//传URL
-
                 qDebug()<<"用户开始查询";
                 // 设置 POST 请求的参数
                 QUrlQuery postData;
-                QString url = ui->urlEdit->text();
-                postData.addQueryItem("url", url);
+                postData.addQueryItem("image", urlEncodedBase64);
+//                qDebug()<<urlEncodedBase64;
                 QByteArray data = postData.toString(QUrl::FullyEncoded).toUtf8();// 转换为 QByteArray
                 reply = manager->post(request, data);// 发送 POST 请求
                 // 连接请求的 finished 信号，处理返回的数据
                 connect(reply, &QNetworkReply::finished, this, &MainWindow::onFinished);
+        }
+        else if(method==1){//传URL
+                qDebug()<<"用户开始查询";
+                // 设置 POST 请求的参数
+                QUrlQuery postData;
+                QString image_url = ui->urlEdit->text();
+                //检验url格式*******
+                postData.addQueryItem("url", image_url);
+                QByteArray data = postData.toString(QUrl::FullyEncoded).toUtf8();// 转换为 QByteArray
+                reply = manager->post(request, data);// 发送 POST 请求
+                // 连接请求的 finished 信号，处理返回的数据
+                connect(reply, &QNetworkReply::finished, this, &MainWindow::onFinished);
+        }
+        else{
+            QMessageBox::critical(this, "错误提示","请选择传参方法！");
         }
     });
 }

@@ -17,7 +17,7 @@
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>280</x>
       <y>-20</y>
       <width>151</width>
       <height>71</height>
@@ -32,7 +32,7 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>191</width>
+      <width>241</width>
       <height>231</height>
      </rect>
     </property>
@@ -62,13 +62,26 @@
       <string>选择导入本地图片</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="selectButton">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>80</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>打开文件</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="widget_3" native="true">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>30</y>
-      <width>181</width>
+      <x>430</x>
+      <y>20</y>
+      <width>221</width>
       <height>231</height>
      </rect>
     </property>
@@ -103,7 +116,7 @@
       <rect>
        <x>30</x>
        <y>60</y>
-       <width>113</width>
+       <width>181</width>
        <height>20</height>
       </rect>
      </property>
@@ -112,14 +125,27 @@
    <widget class="QPushButton" name="searchButton">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>250</y>
+      <x>300</x>
+      <y>280</y>
       <width>80</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>查询</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageLabel">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>90</y>
+      <width>121</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

@@ -60,6 +60,7 @@ private:
     int method;//method==0为image传参，method==1为url传参
     QNetworkAccessManager *manager;  // 网络管理器
     QNetworkReply *reply;           // 网络请求的回复指针
+    QString urlEncodedBase64;       //传入的图片的base64编码
 
 };
 #endif // MAINWINDOW_H
