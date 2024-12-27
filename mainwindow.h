@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QSqlDatabase>
 #include <QMainWindow>
 #include <QString>
 #include <QImage>
@@ -15,6 +16,8 @@
 #include <QUrl>
 #include <QEventLoop>
 #include <QUrlQuery>
+#include <QTextCodec>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,18 +30,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    //测试ssl连接
-    void testSSL()
-    {
-        QSslSocket sslSocket;
-        sslSocket.connectToHostEncrypted("www.example.com", 443);
-
-        if (sslSocket.waitForEncrypted()) {
-            qDebug() << "SSL connection successful!";
-        } else {
-            qDebug() << "SSL connection failed: " << sslSocket.errorString();
-        }
-    }
+    QString QImageToBase64(const QImage &image,QString mimeType);//image转base64
+    void isSslSupported();//是否支持ssl链接
+    void isFormatSupported(QString mimeType,QString fileName,QLabel* imagelabel);
 public slots:
     // 处理请求响应的槽函数
     void onFinished();
