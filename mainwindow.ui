@@ -17,7 +17,7 @@
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>-20</y>
       <width>151</width>
       <height>71</height>
@@ -132,6 +132,19 @@
      </property>
      <property name="text">
       <string>存储</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="logoViewButton">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>290</y>
+       <width>80</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>前往数据库</string>
      </property>
     </widget>
    </widget>

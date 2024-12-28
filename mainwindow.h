@@ -50,7 +50,6 @@ private:
     Ui::MainWindow *ui;
     //声明logolist
     QList<logoModel> logolist;
-    logoView* logoview;
     logoManager* logomanager;
 
 

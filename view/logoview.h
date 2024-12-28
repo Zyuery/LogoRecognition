@@ -6,6 +6,8 @@
 #include <QStandardItemModel>
 #include "dao/logomanager.h"
 
+#include "mainwindow.h"
+
 namespace Ui {
 class logoView;
 }
@@ -17,14 +19,8 @@ class logoView : public QMainWindow
 public:
     explicit logoView(QWidget *parent = nullptr);
     ~logoView();
-
     void showDataList(const int  type);
 
-//定义槽函数
-public slots:
-    void searchBtnSlot();
-    void preBtnSlot();
-    void nextBtnSlot();
 private:
     Ui::logoView *ui;
     // 当界面构建之后需要初始化成员
@@ -32,7 +28,9 @@ private:
     logoManager * logomanager;
     //数据条目渲染的成员 qt
     QStandardItemModel *standardItemModel;
-
+    int pageNow;
+    int pageSize;
+    int totalPage;
 };
 
 #endif // LOGOVIEW_H

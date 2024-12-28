@@ -6,19 +6,9 @@
 
 logoManager::logoManager(QSqlDatabase sdb):db(sdb){}
 
-int logoManager::getPageNow(){
-    return this->pageNow;
-}
-//设置当前页
-void logoManager::setPageNow(const int &pageNow){
-    this->pageNow = pageNow;
-}
-
-int logoManager::getTotalPage(){
-    return this->totalPage;
-}
-//查找数据库中的logo，将查到的数据放进一个QList列表里
+//查：查找数据库中的logo，将查到的数据放进一个QList列表里
 QList<logoModel> logoManager::getlogoList(const QString &keyword)
+
 {
      QList<logoModel> logolist;
      QSqlQuery query(db);
@@ -44,6 +34,38 @@ QList<logoModel> logoManager::getlogoList(const QString &keyword)
     }
     return logolist;
 }
+
+
+//查：获得所有列表
+QList<logoModel> logoManager::getAll(){
+    QList<logoModel> logolist;
+    QSqlQuery query(db);
+    QString sql="SELECT * FROM logos;";
+    query.exec(sql);
+    while(query.next()){
+       //依次循环取出结果集
+       int id = query.value("id").toInt();
+       QString logoName = query.value("logo_name").toString();
+       float probability = query.value("probability").toFloat();
+       int leftPosition = query.value("left_position").toInt();
+       int topPosition = query.value("top_position").toInt();
+       int width = query.value("width").toInt();
+       int height = query.value("height").toInt();
+       QString imageOrigin = query.value("image_origin").toString();
+       QString recognitionTime = query.value("recognition_time").toString();
+       int type = query.value("type").toInt();
+       // 使用构造函数将查询结果封装为 logoModel 对象
+       logoModel logo(id, logoName, probability, leftPosition, topPosition,
+                      width, height, imageOrigin, recognitionTime, type);
+       // 将 logoModel 对象添加到 QList 中
+       logolist.append(logo);
+   }
+   return logolist;
+}
+
+
+
+//增
 void logoManager::putlogoList(QList<logoModel> &logolist)
 {
     QSqlQuery query(db);

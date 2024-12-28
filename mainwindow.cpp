@@ -31,6 +31,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+
 {
     ui->setupUi(this);
     isSslSupported();//检查环境是否支持ssl
@@ -135,96 +136,24 @@ MainWindow::MainWindow(QWidget *parent)
          logomanager->putlogoList(logolist);
          QMessageBox::information(this, "成功", "数据存储成功！");
     });
+
+    //监听页面跳转请求
+    QPushButton *logoViewbutton = ui->logoViewButton;
+    connect(logoViewbutton,&QPushButton::clicked,this,[=]{
+        // 显示第二个窗口
+        logoView* logoview = new logoView();
+        logoview->show();
+        // 隐藏当前窗口
+        this->hide();
+    });
+
+
 }
-
-
-//三、处理响应数据
-void MainWindow::onFinished()
-{
-
-    if (reply) {
-        QByteArray responseData = reply->readAll();  // 获取响应内容
-//        qDebug() << "Response:" << responseData;
-
-        // 处理 JSON 响应（如果需要）
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
-        if (!jsonDoc.isNull()) {
-            QJsonObject jsonObj = jsonDoc.object();
-            qDebug() << "JSON Response:" << jsonObj;
-            // 获取result_num和result数组
-            int resultNum = jsonObj.value("result_num").toInt();
-            QJsonArray resultArray = jsonObj.value("result").toArray();
-
-            // 清空当前的logoList
-            logolist.clear();
-
-            // 遍历result数组，解析每个logo信息并存储到logoList中
-            for (int i = 0; i < resultNum; ++i) {
-                QJsonObject logoObj = resultArray[i].toObject();
-                QString name = logoObj.value("name").toString();
-                int type = logoObj.value("type").toInt();
-                double probability = logoObj.value("probability").toDouble();
-                QJsonObject locationObj = logoObj.value("location").toObject();
-                int left = locationObj.value("left").toInt();
-                int top = locationObj.value("top").toInt();
-                int width = locationObj.value("width").toInt();
-                int height = locationObj.value("height").toInt();
-
-
-                // 创建Logo对象并添加到logoList中
-                logoModel logo;
-                logo.setLogoName(name);
-                qDebug()<<"111111111111111111"<<logo.getLogoName();
-                logo.setType(type);
-                logo.setProbability(probability);
-                qDebug()<<"33333333333333333"<<logo.getProbability();
-                logo.setLeftPosition(left);
-                logo.setTopPosition(top);
-                logo.setWidth(width);
-                logo.setHeight(height);
-                logo.setImageOrigin(method==0?fileName:url);
-
-                // 获取当前时间的QDateTime对象
-                QDateTime currentDateTime = QDateTime::currentDateTime();
-                // 获取当前时间的秒时间戳
-                qint64 secondTimestamp = currentDateTime.toSecsSinceEpoch();
-                logo.setRecognitionTime (timestampToString(secondTimestamp));
-               qDebug()<<"555555555555555555555"<<logo.getRecognitionTime();
-                //加入列表
-                logolist.append(logo);
-                this->standardItemModel = new QStandardItemModel(this);
-                this->standardItemModel->setColumnCount(3);
-                this->standardItemModel->setHorizontalHeaderLabels(QStringList()<<"logoName"<<"置信度"<<"查询时间");
-                //将查询到的logo数据存进数据模型中
-                foreach(logoModel model,logolist){
-                     QStandardItem *item1 = new QStandardItem(model.getLogoName());
-                     QStandardItem *item2 = new QStandardItem(QString::number( model.getProbability()));
-                     QStandardItem *item3 = new QStandardItem(model.getRecognitionTime());
-                     //将四个单元格的数据存入一行
-                     standardItemModel->appendRow(QList<QStandardItem*>()<<item1<<item2<<item3);
-                }
-                QTableView *tableView =ui->tableView;
-                //将standardItemModel渲染到tableView中
-                tableView->setModel(standardItemModel);
-                //让单元格自适应
-                tableView->resizeColumnsToContents();
-            }
-        } else {
-            qDebug() << "无效json响应";
-        }
-        reply->deleteLater();  // 在不需要时删除reply对象
-        reply = nullptr;  // 清空reply指针
-    }
-}
-
-
-
-
-//四、其他操作
 //析构
 MainWindow::~MainWindow()
 {
     delete ui;
+//    delete logoview;
 }
 //图片转base64
 QString MainWindow::QImageToBase64(const QImage &image,QString mimeType) {
@@ -310,6 +239,88 @@ QString timestampToString(qint64 timestampSeconds) {
     QDateTime dateTime = QDateTime::fromSecsSinceEpoch(timestampSeconds);
     return dateTime.toString("yyyy-MM-dd HH:mm:ss");  // 可以自定义想要的日期时间格式
 }
+
+
+//三、处理响应数据
+void MainWindow::onFinished()
+{
+
+    if (reply) {
+        QByteArray responseData = reply->readAll();  // 获取响应内容
+//        qDebug() << "Response:" << responseData;
+
+        // 处理 JSON 响应（如果需要）
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
+        if (!jsonDoc.isNull()) {
+            QJsonObject jsonObj = jsonDoc.object();
+            qDebug() << "JSON Response:" << jsonObj;
+            // 获取result_num和result数组
+            int resultNum = jsonObj.value("result_num").toInt();
+            QJsonArray resultArray = jsonObj.value("result").toArray();
+
+            // 清空当前的logoList
+            logolist.clear();
+
+            // 遍历result数组，解析每个logo信息并存储到logoList中
+            for (int i = 0; i < resultNum; ++i) {
+                QJsonObject logoObj = resultArray[i].toObject();
+                QString name = logoObj.value("name").toString();
+                int type = logoObj.value("type").toInt();
+                double probability = logoObj.value("probability").toDouble();
+                QJsonObject locationObj = logoObj.value("location").toObject();
+                int left = locationObj.value("left").toInt();
+                int top = locationObj.value("top").toInt();
+                int width = locationObj.value("width").toInt();
+                int height = locationObj.value("height").toInt();
+
+
+                // 创建Logo对象并添加到logoList中
+                logoModel logo;
+                logo.setLogoName(name);
+                logo.setType(type);
+                logo.setProbability(probability);
+                logo.setLeftPosition(left);
+                logo.setTopPosition(top);
+                logo.setWidth(width);
+                logo.setHeight(height);
+                logo.setImageOrigin(method==0?fileName:url);
+
+                // 获取当前时间的QDateTime对象
+                QDateTime currentDateTime = QDateTime::currentDateTime();
+                // 获取当前时间的秒时间戳
+                qint64 secondTimestamp = currentDateTime.toSecsSinceEpoch();
+                logo.setRecognitionTime (timestampToString(secondTimestamp));
+                //加入列表
+                logolist.append(logo);
+                this->standardItemModel = new QStandardItemModel(this);
+                this->standardItemModel->setColumnCount(3);
+                this->standardItemModel->setHorizontalHeaderLabels(QStringList()<<"logoName"<<"置信度"<<"查询时间");
+                //将查询到的logo数据存进数据模型中
+                foreach(logoModel model,logolist){
+                     QStandardItem *item1 = new QStandardItem(model.getLogoName());
+                     QStandardItem *item2 = new QStandardItem(QString::number( model.getProbability()));
+                     QStandardItem *item3 = new QStandardItem(model.getRecognitionTime());
+                     //将四个单元格的数据存入一行
+                     standardItemModel->appendRow(QList<QStandardItem*>()<<item1<<item2<<item3);
+                }
+                QTableView *tableView =ui->tableView;
+                //将standardItemModel渲染到tableView中
+                tableView->setModel(standardItemModel);
+                //让单元格自适应
+                tableView->resizeColumnsToContents();
+            }
+        } else {
+            qDebug() << "无效json响应";
+        }
+        reply->deleteLater();  // 在不需要时删除reply对象
+        reply = nullptr;  // 清空reply指针
+    }
+}
+
+
+
+
+
 
 
 

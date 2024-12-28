@@ -17,11 +17,73 @@
    <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
+      <x>10</x>
+      <y>80</y>
       <width>501</width>
       <height>261</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="keywordEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>411</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="queryButton">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>50</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>查询</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="homeButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>主页</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pageUpButton">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>340</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>上一页</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pageDownButton">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>340</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>下一页</string>
     </property>
    </widget>
   </widget>
