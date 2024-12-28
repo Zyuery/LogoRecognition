@@ -9,6 +9,7 @@ class DBManager
     //声明打开和关闭函数
     static bool open(QString dbtype);
     static void close();
+    QSqlDatabase getDb();
  private:
     //声明静态对象
     static QSqlDatabase db;

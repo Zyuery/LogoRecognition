@@ -12,3 +12,6 @@ void DBManager::close()
 {
    db.close();
 }
+QSqlDatabase DBManager:: getDb(){
+    return db;
+}

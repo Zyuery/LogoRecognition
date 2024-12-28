@@ -17,7 +17,7 @@
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>190</x>
       <y>-20</y>
       <width>151</width>
       <height>71</height>
@@ -30,30 +30,17 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>241</width>
-      <height>231</height>
+      <x>20</x>
+      <y>20</y>
+      <width>571</width>
+      <height>311</height>
      </rect>
     </property>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>10</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>导入本地图片</string>
-     </property>
-    </widget>
     <widget class="QRadioButton" name="radioButton">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>40</y>
+       <x>0</x>
+       <y>10</y>
        <width>131</width>
        <height>18</height>
       </rect>
@@ -65,8 +52,8 @@
     <widget class="QPushButton" name="selectButton">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>70</y>
+       <x>0</x>
+       <y>30</y>
        <width>80</width>
        <height>20</height>
       </rect>
@@ -75,34 +62,21 @@
       <string>打开文件</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="widget_3" native="true">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>20</y>
-      <width>221</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLineEdit" name="urlEdit">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>10</y>
-       <width>101</width>
-       <height>16</height>
+       <x>0</x>
+       <y>90</y>
+       <width>181</width>
+       <height>20</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>导入URL</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="radioButton_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>40</y>
+       <x>0</x>
+       <y>70</y>
        <width>131</width>
        <height>18</height>
       </rect>
@@ -111,42 +85,55 @@
       <string>选择导入URL</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="urlEdit">
+    <widget class="QLabel" name="imageLabel">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>60</y>
-       <width>181</width>
+       <x>10</x>
+       <y>120</y>
+       <width>121</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="searchButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>280</y>
+       <width>80</width>
        <height>20</height>
       </rect>
      </property>
+     <property name="text">
+      <string>查询</string>
+     </property>
     </widget>
-   </widget>
-   <widget class="QPushButton" name="searchButton">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>280</y>
-      <width>80</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>查询</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imageLabel">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>90</y>
-      <width>121</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
+    <widget class="QTableView" name="tableView">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>20</y>
+       <width>401</width>
+       <height>271</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="insertButton">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>290</y>
+       <width>80</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>存储</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

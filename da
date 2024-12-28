@@ -1,0 +1,35 @@
+[33mcommit c612bea532a6bc42de5112aa6c908f8faa4c7a81[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: 123zengyue <3229587344@qq.com>
+Date:   Sat Dec 28 10:20:38 2024 +0800
+
+    第六次提交，结束
+
+[33mcommit 99d0604d9f71a45eaf1c9bb2152b3de7c2eb0b5a[m[33m ([m[1;32mother[m[33m, [m[1;32mcheckout[m[33m)[m
+Author: 123zengyue <3229587344@qq.com>
+Date:   Fri Dec 27 17:18:45 2024 +0800
+
+    第五次提交，项目分层已搭建好，但具体功能还未实现
+
+[33mcommit cb3a6065c3fecb0262b8f44fd01d4c25967d80f0[m
+Author: 123zengyue <3229587344@qq.com>
+Date:   Fri Dec 27 15:35:19 2024 +0800
+
+    第四次提交，尝试解析json响应，具体的logo实体类还未实现
+
+[33mcommit e172bbee27b7a0ae56f47d4ff4d1417c35b33aee[m
+Author: 123zengyue <3229587344@qq.com>
+Date:   Fri Dec 27 15:13:04 2024 +0800
+
+    第三次提交，url和image两种传参方式都已得实现，能通过接口接收到正确的响应，
+
+[33mcommit ec827949e5a08ce38905088afe454771136a1bd0[m
+Author: 123zengyue <3229587344@qq.com>
+Date:   Fri Dec 27 13:26:31 2024 +0800
+
+    第二次提交   实现图片转base64编码出现问题，未正确转码
+
+[33mcommit 2eddcf79a451968d9b432cb0695b4ca896926347[m
+Author: 123zengyue <3229587344@qq.com>
+Date:   Thu Dec 26 22:30:44 2024 +0800
+
+    第一次提交，实现基础的传参，实现了传入图片url返回logo信息的响应

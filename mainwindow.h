@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include "view/logoview.h"
 #include "model/logomodel.h"
+#include "dbmanager.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
@@ -41,13 +43,15 @@ public slots:
     // 处理请求响应的槽函数
     void onFinished();
 
-
-
+private slots:
+    void on_insertButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     //声明logolist
     QList<logoModel> logolist;
+    logoView* logoview;
+    logoManager* logomanager;
 
 
 //请求参数
@@ -63,7 +67,10 @@ private:
     QNetworkAccessManager *manager;  // 网络管理器
     QNetworkReply *reply;           // 网络请求的回复指针
     QString urlEncodedBase64;       //传入的图片的base64编码
+    QString fileName;
 
+    //数据条目渲染的成员 qt
+    QStandardItemModel *standardItemModel;
 };
 #endif // MAINWINDOW_H
 
