@@ -11,8 +11,8 @@ public:
     //需要包含操作logo表的方法
 
     //查
-    QList<logoModel> getlogoList(const QString &keyword);//查询logo列表
-    QList<logoModel> getAll();
+    QList<logoModel> getlogoList(const QString &keyword,int pageNow,int pageSize);//分页查询
+    QList<logoModel> getAll();//查询all
     //增
     void putlogoList(QList<logoModel> &);//添加logo进数据库
 

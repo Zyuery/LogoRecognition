@@ -31,6 +31,7 @@ private:
     int pageNow;
     int pageSize;
     int totalPage;
+    QString keyword;
 };
 
 #endif // LOGOVIEW_H

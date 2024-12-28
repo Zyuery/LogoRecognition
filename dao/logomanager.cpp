@@ -7,12 +7,12 @@
 logoManager::logoManager(QSqlDatabase sdb):db(sdb){}
 
 //查：查找数据库中的logo，将查到的数据放进一个QList列表里
-QList<logoModel> logoManager::getlogoList(const QString &keyword)
+QList<logoModel> logoManager::getlogoList(const QString &keyword,int pageNow,int pageSize)
 
 {
      QList<logoModel> logolist;
      QSqlQuery query(db);
-     QString sql="SELECT * FROM logos WHERE logo_name LIKE %'"+keyword+"'%;";
+     QString sql = "SELECT * FROM logos WHERE logo_name LIKE '%" + keyword + "%' LIMIT " + QString::number((pageNow - 1) * pageSize) + "," + QString::number(pageSize) + ";";
      query.exec(sql);
     while(query.next()){
         //依次循环取出结果集

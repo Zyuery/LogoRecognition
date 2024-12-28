@@ -290,6 +290,7 @@ void MainWindow::onFinished()
                 // 获取当前时间的秒时间戳
                 qint64 secondTimestamp = currentDateTime.toSecsSinceEpoch();
                 logo.setRecognitionTime (timestampToString(secondTimestamp));
+
                 //加入列表
                 logolist.append(logo);
                 this->standardItemModel = new QStandardItemModel(this);
