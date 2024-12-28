@@ -131,10 +131,14 @@ MainWindow::MainWindow(QWidget *parent)
          DBManager* dbmng = new DBManager();
          dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db");
          if(dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db"))
-             qDebug()<<"22222222222222222成功链接到数据库";
          this->logomanager = new logoManager(dbmng->getDb());
          logomanager->putlogoList(logolist);
-         QMessageBox::information(this, "成功", "数据存储成功！");
+         if(logolist.isEmpty()){
+             QMessageBox::warning(this, "警告", "列表容器中无数据");
+         }
+         else{
+             QMessageBox::information(this, "成功", "数据存储成功！");
+         }
     });
 
     //监听页面跳转请求

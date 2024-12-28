@@ -34,7 +34,34 @@ QList<logoModel> logoManager::getlogoList(const QString &keyword,int pageNow,int
     }
     return logolist;
 }
+//查:模糊查找辅助计算totalPage
+QList<logoModel> logoManager::getlogoList(const QString &keyword)
 
+{
+     QList<logoModel> logolist;
+     QSqlQuery query(db);
+     QString sql = "SELECT * FROM logos WHERE logo_name LIKE '%" + keyword + "%';";
+     query.exec(sql);
+    while(query.next()){
+        //依次循环取出结果集
+        int id = query.value("id").toInt();
+        QString logoName = query.value("logo_name").toString();
+        float probability = query.value("probability").toFloat();
+        int leftPosition = query.value("left_position").toInt();
+        int topPosition = query.value("top_position").toInt();
+        int width = query.value("width").toInt();
+        int height = query.value("height").toInt();
+        QString imageOrigin = query.value("image_origin").toString();
+        QString recognitionTime = query.value("recognition_time").toString();
+        int type = query.value("type").toInt();
+        // 使用构造函数将查询结果封装为 logoModel 对象
+        logoModel logo(id, logoName, probability, leftPosition, topPosition,
+                       width, height, imageOrigin, recognitionTime, type);
+        // 将 logoModel 对象添加到 QList 中
+        logolist.append(logo);
+    }
+    return logolist;
+}
 
 //查：获得所有列表
 QList<logoModel> logoManager::getAll(){
