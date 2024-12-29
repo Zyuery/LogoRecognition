@@ -3,12 +3,14 @@
 #include "dbmanager.h"
 #include <QSqlDatabase>
 #include <QDebug>
+#include <QMessageBox>
 
 logoView::logoView(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::logoView),
     pageNow(1),
-    pageSize(10)
+    pageSize(10),
+    id(-1)
 {
     ui->setupUi(this);
 // 链接数据库
@@ -32,7 +34,7 @@ logoView::logoView(QWidget *parent) :
      //获取！最大！总页数
      totalPage = (logomanager->getAll().count() + pageSize - 1) / pageSize;
      // 调用分页查询(keyword为空串)
-     QList<logoModel> logolist = logomanager->getlogoList("",pageNow,pageSize);
+     QList<logoModel> logolist = logomanager->getLogoList("",pageNow,pageSize);
      //设置pageLabel内容
      QLabel *pagelabel=ui->pageLabel;
      pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
@@ -57,6 +59,7 @@ logoView::logoView(QWidget *parent) :
     MainWindow* mainWindow =new MainWindow();
     connect(homeButton,&QPushButton::clicked,this,[=](){
         // 显示第二个窗口
+        mainWindow->setWindowTitle("LogoRecognition");
         mainWindow->show();
         // 隐藏当前窗口
         this->hide();
@@ -74,9 +77,9 @@ logoView::logoView(QWidget *parent) :
         // 清空现有数据
         standardItemModel->removeRows(0, standardItemModel->rowCount());
         //获取总页数
-        totalPage = (logomanager->getlogoList(keyword).count() + pageSize - 1) / pageSize;
+        totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
         // 调用分页查询
-        QList<logoModel> logolist = logomanager->getlogoList(keyword,pageNow,pageSize);
+        QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
         //设置pageLabel内容
         pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
 
@@ -104,9 +107,9 @@ logoView::logoView(QWidget *parent) :
                 // 清空现有数据
                 standardItemModel->removeRows(0, standardItemModel->rowCount());
                 // 调用分页查询(keyword为空串)
-                QList<logoModel> logolist = logomanager->getlogoList(keyword,pageNow,pageSize);
+                QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
                 //获取总页数
-                totalPage = (logomanager->getlogoList(keyword).count() + pageSize - 1) / pageSize;
+                totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
                 //设置pageLabel内容
                 pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
                 // 将查询到的 logo 数据存进数据模型中
@@ -135,9 +138,9 @@ logoView::logoView(QWidget *parent) :
                 // 清空现有数据
                 standardItemModel->removeRows(0, standardItemModel->rowCount());
                 // 调用分页查询
-                QList<logoModel> logolist = logomanager->getlogoList(keyword,pageNow,pageSize);
+                QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
                 //获取总页数
-                totalPage = (logomanager->getlogoList(keyword).count() + pageSize - 1) / pageSize;
+                totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
                 //设置pageLabel内容
                 pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
                 // 将查询到的 logo 数据存进数据模型中
@@ -157,8 +160,28 @@ logoView::logoView(QWidget *parent) :
                 qDebug() << "成功查询" << totalPage;
             }
     });
-}
 
+//监听deleteEdit获取待删除对象的id
+    QLineEdit *deleteEdit = ui->deleteEdit;
+    connect(deleteEdit, &QLineEdit::textChanged, this, [=] {
+        // 获取输入的id
+        QString text = deleteEdit->text();
+        id = text.toInt();
+    });
+
+//监听删除按扭
+    QPushButton *deleteButton = ui->deleteButton;
+    connect(deleteButton,&QPushButton::clicked,this,[=](){
+        bool isDelete = this->logomanager->deleteLogolist(id);
+        if(isDelete){
+            QMessageBox::information(this,"成功信息","删除成功");
+        }
+        else {
+            QMessageBox::critical(this,"错误信息","删除失败！");
+        }
+    });
+
+}
 
 //析构
 logoView::~logoView() {

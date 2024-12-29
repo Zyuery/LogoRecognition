@@ -7,7 +7,7 @@
 logoManager::logoManager(QSqlDatabase sdb):db(sdb){}
 
 //查：查找数据库中的logo，将查到的数据放进一个QList列表里
-QList<logoModel> logoManager::getlogoList(const QString &keyword,int pageNow,int pageSize)
+QList<logoModel> logoManager::getLogoList(const QString &keyword,int pageNow,int pageSize)
 
 {
      QList<logoModel> logolist;
@@ -35,7 +35,7 @@ QList<logoModel> logoManager::getlogoList(const QString &keyword,int pageNow,int
     return logolist;
 }
 //查:模糊查找辅助计算totalPage
-QList<logoModel> logoManager::getlogoList(const QString &keyword)
+QList<logoModel> logoManager::getLogoList(const QString &keyword)
 
 {
      QList<logoModel> logolist;
@@ -93,7 +93,7 @@ QList<logoModel> logoManager::getAll(){
 
 
 //增
-void logoManager::putlogoList(QList<logoModel> &logolist)
+void logoManager::putLogoList(QList<logoModel> &logolist)
 {
     QSqlQuery query(db);
     // 开始事务
@@ -156,6 +156,21 @@ void logoManager::putlogoList(QList<logoModel> &logolist)
         qDebug() << "提交事务失败: " << db.lastError().text();
     } else {
         qDebug() << "插入成功，事务已提交";
+    }
+}
+
+//删
+bool logoManager::deleteLogolist(int id){
+    QSqlQuery query(db);
+    QString sql = "DELETE FROM logos WHERE id ="+QString::number(id)+";";
+    query.exec(sql);
+    // 执行查询并检查是否成功
+    if (!query.exec()) {
+        qDebug() << "删除失败" << id << ":" << query.lastError().text();
+        return false;
+    } else {
+        qDebug() << "成功删除" << id;
+        return true;
     }
 }
 

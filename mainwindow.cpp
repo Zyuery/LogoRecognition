@@ -130,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent)
          dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db");
          if(dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db"))
          this->logomanager = new logoManager(dbmng->getDb());
-         logomanager->putlogoList(logolist);
+         logomanager->putLogoList(logolist);
          if(logolist.isEmpty()){
              QMessageBox::warning(this, "警告", "列表容器中无数据");
          }
@@ -144,6 +144,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(logoViewbutton,&QPushButton::clicked,this,[=]{
         // 显示第二个窗口
         logoView* logoview = new logoView();
+        logoview->setWindowTitle("dbPresentation");
         logoview->show();
         // 隐藏当前窗口
         this->hide();

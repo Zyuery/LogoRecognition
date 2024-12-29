@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/926386dea79cf2ea36dcb89162ddac4.jpg</file>
         <file>img/fc81f9531389b9246ecb09838cdb851.jpg</file>
+        <file>img/retouch_2024122911010896.png</file>
+        <file>img/4a154c900c9b2cdcfc7e5ddb8c535cf.png</file>
+        <file>img/926386dea79cf2ea36dcb89162ddac4.jpg</file>
     </qresource>
 </RCC>
