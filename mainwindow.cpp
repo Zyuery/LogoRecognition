@@ -30,6 +30,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    ,method(-1)
 
 {
     ui->setupUi(this);
@@ -71,28 +72,29 @@ MainWindow::MainWindow(QWidget *parent)
     QPushButton *selectbutton = ui->selectButton;
     QLabel *imagelabel = ui->imageLabel;
     connect(selectbutton,&QPushButton::clicked,this,[=](){
-        fileName = QFileDialog::getOpenFileName(this, "选择图片", QString(), "Images (*.png *.jpg *.bmp)");
-        QString mimeType = QFileInfo(fileName).suffix().toLower();
-        QImage image(fileName);
-        //检查图片格式
-        isFormatSupported(mimeType,fileName,imagelabel);
-
-
-//图片编码操作
-        //Base64编码
-        QString base64String=QImageToBase64(image,mimeType);
-        if (base64String.isEmpty()) {
-            QMessageBox::warning(this, "错误", "Base64编码失败！");
-            return;
-        }
-        // URL编码
-         urlEncodedBase64 = QUrl::toPercentEncoding(base64String);
-         if(urlEncodedBase64.isEmpty()){
-             qDebug() << "urlEncodedBase64为空";
+        if(method==0){
+            fileName = QFileDialog::getOpenFileName(this, "选择图片", QString(), "Images (*.png *.jpg *.bmp)");
+            QString mimeType = QFileInfo(fileName).suffix().toLower();
+            QImage image(fileName);
+            if(fileName!=NULL){
+                //检查图片格式
+                isFormatSupported(mimeType,fileName,imagelabel);
+            //图片编码操作
+                //Base64编码
+                QString base64String=QImageToBase64(image,mimeType);
+                if (base64String.isEmpty()) {
+                    QMessageBox::warning(this, "错误", "Base64编码失败！");
+                    return;
+                }
+                // URL编码
+                 urlEncodedBase64 = QUrl::toPercentEncoding(base64String);
+                 if(urlEncodedBase64.isEmpty()){
+                     qDebug() << "urlEncodedBase64为空";
+                 }
+            }
         }
     });
-
-    //监听查询请求发送的按钮searchButton
+//监听查询请求发送的按钮searchButton
     QPushButton *searchbutton = ui->searchButton;
     connect(searchbutton,&QPushButton::clicked,this,[=]{
         if(method==0){//传base64
@@ -145,9 +147,10 @@ MainWindow::MainWindow(QWidget *parent)
         // 显示第二个窗口
         logoView* logoview = new logoView();
         logoview->setWindowTitle("dbPresentation");
+        logoview->setFixedSize(1300,750);
         logoview->show();
         // 隐藏当前窗口
-        this->hide();
+        this->close();
     });
 
 
@@ -233,6 +236,7 @@ void MainWindow::isFormatSupported(QString mimeType,QString fileName,QLabel* ima
     qDebug() << "图片文件路径：" << fileName;
     // 显示图片
     imagelabel->setPixmap(QPixmap::fromImage(image));
+    imagelabel->setScaledContents(true);
 }
 
 //时间戳处理
@@ -257,6 +261,9 @@ void MainWindow::onFinished()
             qDebug() << "JSON Response:" << jsonObj;
             // 获取result_num和result数组
             int resultNum = jsonObj.value("result_num").toInt();
+            if (resultNum<=0){
+                QMessageBox::warning(this, "输入错误", "未检测到图片中有logo信息", QMessageBox::Ok);
+            }
             QJsonArray resultArray = jsonObj.value("result").toArray();
 
             // 清空当前的logoList
@@ -314,6 +321,7 @@ void MainWindow::onFinished()
             }
         } else {
             qDebug() << "无效json响应";
+            QMessageBox::warning(this, "输入错误", "获得了无效json响应，请检查图片是否满足接口规范", QMessageBox::Ok);
         }
         reply->deleteLater();  // 在不需要时删除reply对象
         reply = nullptr;  // 清空reply指针

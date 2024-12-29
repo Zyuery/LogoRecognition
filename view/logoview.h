@@ -5,7 +5,6 @@
 #include <QSqlDatabase>
 #include <QStandardItemModel>
 #include "dao/logomanager.h"
-
 #include "mainwindow.h"
 
 namespace Ui {
@@ -19,7 +18,6 @@ class logoView : public QMainWindow
 public:
     explicit logoView(QWidget *parent = nullptr);
     ~logoView();
-    void showDataList(const int  type);
 
 private:
     Ui::logoView *ui;

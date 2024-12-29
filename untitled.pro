@@ -17,22 +17,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     dao/logomanager.cpp \
+    dao/usermanager.cpp \
     dbmanager.cpp \
     main.cpp \
     mainwindow.cpp \
     model/logomodel.cpp \
-    view/logoview.cpp
+    model/usermodel.cpp \
+    view/loginview.cpp \
+    view/logoview.cpp \
+    view/registerview.cpp
 
 HEADERS += \
     dao/logomanager.h \
+    dao/usermanager.h \
     dbmanager.h \
     mainwindow.h \
     model/logomodel.h \
-    view/logoview.h
+    model/usermodel.h \
+    view/loginview.h \
+    view/logoview.h \
+    view/registerview.h
 
 FORMS += \
     mainwindow.ui \
-    view/logoview.ui
+    view/loginview.ui \
+    view/logoview.ui \
+    view/registerview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

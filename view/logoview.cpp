@@ -60,9 +60,10 @@ logoView::logoView(QWidget *parent) :
     connect(homeButton,&QPushButton::clicked,this,[=](){
         // 显示第二个窗口
         mainWindow->setWindowTitle("LogoRecognition");
+        mainWindow->setFixedSize(1300,750);
         mainWindow->show();
         // 隐藏当前窗口
-        this->hide();
+        this->close();
     });
 
 //监听输入框
