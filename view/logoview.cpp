@@ -134,7 +134,7 @@ logoView::logoView(QWidget *parent) :
                 pageNow++;
                 // 清空现有数据
                 standardItemModel->removeRows(0, standardItemModel->rowCount());
-                // 调用分页查询(keyword为空串)
+                // 调用分页查询
                 QList<logoModel> logolist = logomanager->getlogoList(keyword,pageNow,pageSize);
                 //获取总页数
                 totalPage = (logomanager->getlogoList(keyword).count() + pageSize - 1) / pageSize;

@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"  // 包含由 uic 生成的 UI 头文件
 #include "dbmanager.h"
-
 #include "model/logomodel.h"
 #include "dao/logomanager.h"
 #include <QJsonArray>
@@ -35,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     isSslSupported();//检查环境是否支持ssl
-
 
     // 定义QNetworkAccessManager对象，保证后续发送请求
     manager = new QNetworkAccessManager(this);
@@ -91,7 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
          urlEncodedBase64 = QUrl::toPercentEncoding(base64String);
          if(urlEncodedBase64.isEmpty()){
              qDebug() << "urlEncodedBase64为空";
-         }
+        }
     });
 
     //监听查询请求发送的按钮searchButton
@@ -167,7 +165,7 @@ QString MainWindow::QImageToBase64(const QImage &image,QString mimeType) {
     buffer.open(QIODevice::WriteOnly);
 
     // 根据mimeType决定图像保存的格式
-    QString format = mimeType.toLower(); // 统一转换为小写
+    QString format = mimeType.toLower();
     if (format == "png") {
         image.save(&buffer, "PNG");
         qDebug()<<"image后缀为"<<format;
@@ -188,6 +186,7 @@ QString MainWindow::QImageToBase64(const QImage &image,QString mimeType) {
     // 返回Base64编码的字符串
     return QString::fromUtf8(base64Data);
 }
+
 //检查环境是否支持ssl
 void MainWindow::isSslSupported(){
     if (QSslSocket::supportsSsl()) {
@@ -196,32 +195,29 @@ void MainWindow::isSslSupported(){
         qDebug() << "SSL is NOT supported!";
     }
 }
+
 //检查图片格式是否正确
 void MainWindow::isFormatSupported(QString mimeType,QString fileName,QLabel* imagelabel){
     if (!(mimeType == "png" || mimeType == "jpg" || mimeType == "bmp")) {
         QMessageBox::warning(this, "错误", "不支持的图片格式！请使用PNG、JPG或BMP格式");
         return;
     }
-
     if (fileName.isEmpty()) {
         QMessageBox::critical(this, "错误提示","文件不合法！");
         return;  // 用户取消选择，退出函数
     }
-
     //检查图片大小是否符合条件
     QFileInfo fileInfo(fileName);
     if (fileInfo.size() > 4 * 1024 * 1024) {  // 大小超过4MB
         QMessageBox::warning(this, "错误", "图片大小不能超过4MB");
         return;
     }
-
     // 加载图片
     QImage image(fileName);
     if (image.isNull()) {
         QMessageBox::warning(this, "无效图片", "加载图片失败");
         return;  // 图片加载失败，退出函数
     }
-
     //检查图片大小是否符合规范
     int width = image.width();
     int height = image.height();
@@ -233,11 +229,11 @@ void MainWindow::isFormatSupported(QString mimeType,QString fileName,QLabel* ima
         QMessageBox::warning(this, "错误", "图片的最长边不能超过4096px");
         return;
     }
-
     qDebug() << "图片文件路径：" << fileName;
     // 显示图片
     imagelabel->setPixmap(QPixmap::fromImage(image));
 }
+
 //时间戳处理
 QString timestampToString(qint64 timestampSeconds) {
     QDateTime dateTime = QDateTime::fromSecsSinceEpoch(timestampSeconds);
@@ -299,14 +295,15 @@ void MainWindow::onFinished()
                 logolist.append(logo);
                 this->standardItemModel = new QStandardItemModel(this);
                 this->standardItemModel->setColumnCount(3);
-                this->standardItemModel->setHorizontalHeaderLabels(QStringList()<<"logoName"<<"置信度"<<"查询时间");
+                this->standardItemModel->setHorizontalHeaderLabels(QStringList()<<"logoName"<<"置信度"<<"查询时间"<<"查询来源");
                 //将查询到的logo数据存进数据模型中
                 foreach(logoModel model,logolist){
                      QStandardItem *item1 = new QStandardItem(model.getLogoName());
                      QStandardItem *item2 = new QStandardItem(QString::number( model.getProbability()));
                      QStandardItem *item3 = new QStandardItem(model.getRecognitionTime());
+                     QStandardItem *item4 = new QStandardItem(model.getImageOrigin());
                      //将四个单元格的数据存入一行
-                     standardItemModel->appendRow(QList<QStandardItem*>()<<item1<<item2<<item3);
+                     standardItemModel->appendRow(QList<QStandardItem*>()<<item1<<item2<<item3<<item4);
                 }
                 QTableView *tableView =ui->tableView;
                 //将standardItemModel渲染到tableView中
@@ -321,11 +318,4 @@ void MainWindow::onFinished()
         reply = nullptr;  // 清空reply指针
     }
 }
-
-
-
-
-
-
-
 
