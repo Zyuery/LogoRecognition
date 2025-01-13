@@ -27,12 +27,14 @@
 #include <QDateTime>
 #include <QTableView>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent,QString username)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    ,username(username)
     ,method(-1)
-
 {
+    qDebug()<<"1当前登录的用户是"<<this->getUsername();
+
     ui->setupUi(this);
     isSslSupported();//检查环境是否支持ssl
 
@@ -132,7 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
          dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db");
          if(dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db"))
          this->logomanager = new logoManager(dbmng->getDb());
-         logomanager->putLogoList(logolist);
+         logomanager->putLogoList(logolist,username);
          if(logolist.isEmpty()){
              QMessageBox::warning(this, "警告", "列表容器中无数据");
          }
@@ -145,7 +147,7 @@ MainWindow::MainWindow(QWidget *parent)
     QPushButton *logoViewbutton = ui->logoViewButton;
     connect(logoViewbutton,&QPushButton::clicked,this,[=]{
         // 显示第二个窗口
-        logoView* logoview = new logoView();
+        logoView* logoview = new logoView(nullptr,username);
         logoview->setWindowTitle("dbPresentation");
         logoview->setFixedSize(1300,750);
         logoview->show();
@@ -253,7 +255,7 @@ void MainWindow::onFinished()
     if (reply) {
         QByteArray responseData = reply->readAll();  // 获取响应内容
 //        qDebug() << "Response:" << responseData;
-
+        qDebug() <<"当前登录用户为"+username;
         // 处理 JSON 响应（如果需要）
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (!jsonDoc.isNull()) {

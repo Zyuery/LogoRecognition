@@ -16,8 +16,15 @@ class logoView : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit logoView(QWidget *parent = nullptr);
+    explicit logoView(QWidget *parent = nullptr,QString username="admin");
     ~logoView();
+    //username的getter和Setter 方法
+    void setUsername(const QString& newUsername) {
+        username = newUsername;
+    }
+    QString getUsername() const {
+        return username;
+    }
 
 private:
     Ui::logoView *ui;
@@ -31,6 +38,7 @@ private:
     int totalPage;
     QString keyword;
     int id;
+    QString username;//当前登录的用户
 };
 
 #endif // LOGOVIEW_H

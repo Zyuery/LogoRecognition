@@ -32,17 +32,27 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr ,QString username="admin");
     ~MainWindow();
     QString QImageToBase64(const QImage &image,QString mimeType);//image转base64
     void isSslSupported();//是否支持ssl链接
     void isFormatSupported(QString mimeType,QString fileName,QLabel* imagelabel);
+
 public slots:
+
+
     // 处理请求响应的槽函数
     void onFinished();
 
-private slots:
-    void on_insertButton_clicked();
+//    void on_insertButton_clicked();
+
+    //username的getter和Setter 方法
+    void setUsername(const QString& newUsername) {
+       this->username = newUsername;
+    }
+    QString getUsername() const {
+        return this->username;
+    }
 
 private:
     Ui::MainWindow *ui;
@@ -66,7 +76,6 @@ private:
     QNetworkReply *reply;           // 网络请求的回复指针
     QString urlEncodedBase64;       //传入的图片的base64编码
     QString fileName;
-
     //数据条目渲染的成员 qt
     QStandardItemModel *standardItemModel;
 };

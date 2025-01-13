@@ -44,7 +44,8 @@ LoginView::LoginView(QWidget *parent) :
             // 登录成功，跳转到下一个界面或进行其他操作
             qDebug() << "登录成功，欢迎" << user.getUsername();
             // 例如：跳转到主页面
-            MainWindow *mainWindow = new MainWindow();
+            MainWindow *mainWindow = new MainWindow(nullptr, username);
+            mainWindow->setUsername(user.getUsername());
             mainWindow->setWindowTitle("LogoRecognition");
             mainWindow->show();
             this->close(); // 关闭当前登录窗口

@@ -3,7 +3,7 @@
 // 无参数的构造方法
 logoModel::logoModel()
     : id(0), logoName(""), probability(0.0f), leftPosition(0), topPosition(0),
-      width(0), height(0), imageOrigin(""), recognitionTime(""), type(0)
+      width(0), height(0), imageOrigin(""), recognitionTime(""), type(0),username("admin")
 {
 }
 
@@ -12,10 +12,10 @@ logoModel::logoModel(const int &id, const QString &logoName, const float &probab
                      const int &leftPosition, const int &topPosition,
                      const int &width, const int &height,
                      const QString &imageOrigin, const QString &recognitionTime,
-                     const int &type)
+                     const int &type,const QString username)
     : id(id), logoName(logoName), probability(probability), leftPosition(leftPosition),
       topPosition(topPosition), width(width), height(height), imageOrigin(imageOrigin),
-      recognitionTime(recognitionTime), type(type)
+      recognitionTime(recognitionTime), type(type),username(username)
 {
 }
 
@@ -99,4 +99,12 @@ void logoModel::setType(const int &type) {
 
 int logoModel::getType() const {
     return type;
+}
+
+void logoModel::setUsername(const int &username){
+    this->username = username;
+}
+
+QString logoModel::getUsername() const{
+    return username;
 }

@@ -11,7 +11,7 @@ public:
               const int &leftPosition, const int &topPosition,
               const int &width, const int &height,
               const QString &imageOrigin, const QString &recognitionTime,
-              const int &type); // 全参数构造方法
+              const int &type,const QString username); // 全参数构造方法
 
     // 设置和获取成员变量的公有方法
     void setId(const int &id);
@@ -44,6 +44,9 @@ public:
     void setType(const int &type);
     int getType() const;
 
+    void setUsername(const int &username);
+    QString getUsername() const;
+
 private:
     // 定义 logo 数据模型的属性
     int id;
@@ -56,6 +59,7 @@ private:
     QString imageOrigin;
     QString recognitionTime;
     int type;
+    QString username;
 };
 
 #endif // LOGOMODEL_H

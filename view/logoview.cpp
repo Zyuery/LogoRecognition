@@ -6,14 +6,18 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 
-logoView::logoView(QWidget *parent) :
+logoView::logoView(QWidget *parent,QString username) :
     QMainWindow(parent),
     ui(new Ui::logoView),
     pageNow(1),
     pageSize(10),
-    id(-1)
+    id(-1),
+    username(username)
 {
     ui->setupUi(this);
+
+    qDebug()<<"2当前登录的用户是"<<this->username;
+
 // 链接数据库
     DBManager* dbmng = new DBManager();
     bool dbOpened = dbmng->open("D:\\qtProject\\TeamDemo\\project\\untitled\\sql\\demo.db");
@@ -32,9 +36,9 @@ logoView::logoView(QWidget *parent) :
      // 清空现有数据
      standardItemModel->removeRows(0, standardItemModel->rowCount());
      //获取！最大！总页数
-     totalPage = (logomanager->getAll().count() + pageSize - 1) / pageSize;
+     totalPage = (logomanager->getAll(username).count() + pageSize - 1) / pageSize;
      // 调用分页查询(keyword为空串)
-     QList<logoModel> logolist = logomanager->getLogoList("",pageNow,pageSize);
+     QList<logoModel> logolist = logomanager->getLogoList("",pageNow,pageSize,username);
      //设置pageLabel内容
      QLabel *pagelabel=ui->pageLabel;
      pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
@@ -56,7 +60,7 @@ logoView::logoView(QWidget *parent) :
 
 //监听返回主页按钮
     QPushButton *homeButton=ui->homeButton;
-    MainWindow* mainWindow =new MainWindow();
+    MainWindow* mainWindow =new MainWindow(nullptr,username);
     connect(homeButton,&QPushButton::clicked,this,[=](){
         // 显示第二个窗口
         mainWindow->setWindowTitle("LogoRecognition");
@@ -78,11 +82,11 @@ logoView::logoView(QWidget *parent) :
         // 清空现有数据
         standardItemModel->removeRows(0, standardItemModel->rowCount());
         //获取总页数
-        totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
+        totalPage = (logomanager->getLogoList(keyword,username).count() + pageSize - 1) / pageSize;
         //重新重第一页开始查询
         pageNow=1;
         // 调用分页查询
-        QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
+        QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize,username);
         //设置pageLabel内容
         pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
 
@@ -110,9 +114,9 @@ logoView::logoView(QWidget *parent) :
                 // 清空现有数据
                 standardItemModel->removeRows(0, standardItemModel->rowCount());
                 // 调用分页查询(keyword为空串)
-                QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
+                QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize,username);
                 //获取总页数
-                totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
+                totalPage = (logomanager->getLogoList(keyword,username).count() + pageSize - 1) / pageSize;
                 //设置pageLabel内容
                 pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
                 // 将查询到的 logo 数据存进数据模型中
@@ -141,9 +145,9 @@ logoView::logoView(QWidget *parent) :
                 // 清空现有数据
                 standardItemModel->removeRows(0, standardItemModel->rowCount());
                 // 调用分页查询
-                QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
+                QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize,username);
                 //获取总页数
-                totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
+                totalPage = (logomanager->getLogoList(keyword,username).count() + pageSize - 1) / pageSize;
                 //设置pageLabel内容
                 pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
                 // 将查询到的 logo 数据存进数据模型中
@@ -175,15 +179,15 @@ logoView::logoView(QWidget *parent) :
 //监听删除按扭
     QPushButton *deleteButton = ui->deleteButton;
     connect(deleteButton,&QPushButton::clicked,this,[=](){
-        bool isDelete = this->logomanager->deleteLogolist(id);
+        bool isDelete = this->logomanager->deleteLogolist(id,username);
         if(isDelete){
             QMessageBox::information(this,"成功信息","删除成功");
             // 清空现有数据
             standardItemModel->removeRows(0, standardItemModel->rowCount());
             // 调用分页查询(keyword为空串)
-            QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize);
+            QList<logoModel> logolist = logomanager->getLogoList(keyword,pageNow,pageSize,username);
             //获取总页数
-            totalPage = (logomanager->getLogoList(keyword).count() + pageSize - 1) / pageSize;
+            totalPage = (logomanager->getLogoList(keyword,username).count() + pageSize - 1) / pageSize;
             //设置pageLabel内容
             pagelabel->setText(QString::number(pageNow) + "/" + QString::number(totalPage));
             // 将查询到的 logo 数据存进数据模型中
@@ -217,7 +221,7 @@ logoView::logoView(QWidget *parent) :
         QPushButton *baiduButton = ui->baiduButton;
         connect(baiduButton,&QPushButton::clicked,this,[=](){
             QString text = baiduEdit->text();
-            QString queryText = logomanager->getById(text);
+            QString queryText = logomanager->getById(text,username);
             if(!queryText.isEmpty()){
                 QString url = QString("https://www.baidu.com/s?wd=%1").arg(queryText);
                 // 使用 QDesktopServices 打开浏览器，跳转到百度搜索页面
