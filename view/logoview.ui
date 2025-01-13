@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../img.qrc">
-    <normaloff>:/img/fc81f9531389b9246ecb09838cdb851.jpg</normaloff>:/img/fc81f9531389b9246ecb09838cdb851.jpg</iconset>
+    <normaloff>:/img/retouch_2025011309461031.png</normaloff>:/img/retouch_2025011309461031.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="widget" native="true">
@@ -61,7 +61,7 @@
       </size>
      </property>
      <property name="placeholderText">
-      <string>查询输入框</string>
+      <string>输入关键字搜素</string>
      </property>
     </widget>
     <widget class="QTableView" name="tableView">
@@ -111,6 +111,7 @@
       <string notr="true">*{
 	background-color: rgb(90, 116, 144);
 	color: rgb(255, 255, 255);
+	border-radius:20px;
 }</string>
      </property>
      <property name="text">
@@ -216,8 +217,11 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(168, 90, 78);
-color: rgb(255, 255, 255);</string>
+       <string notr="true">*{
+background-color: rgb(168, 90, 78);
+color: rgb(255, 255, 255);
+border-radius:20px;
+}</string>
       </property>
       <property name="text">
        <string>确认删除</string>
@@ -395,6 +399,39 @@ color: rgb(255, 255, 255);</string>
       <string/>
      </property>
     </widget>
+    <widget class="QLineEdit" name="baiduEdit">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>66</y>
+       <width>116</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>输入id或名称</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="baiduButton">
+     <property name="geometry">
+      <rect>
+       <x>740</x>
+       <y>66</y>
+       <width>80</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">*{
+color:white;
+	background-color: rgb(231, 147, 83);
+border-radius:20px;
+}</string>
+     </property>
+     <property name="text">
+      <string>百度一下</string>
+     </property>
+    </widget>
     <zorder>label_2</zorder>
     <zorder>keywordEdit</zorder>
     <zorder>tableView</zorder>
@@ -405,6 +442,8 @@ color: rgb(255, 255, 255);</string>
     <zorder>label</zorder>
     <zorder>label_3</zorder>
     <zorder>label_4</zorder>
+    <zorder>baiduEdit</zorder>
+    <zorder>baiduButton</zorder>
    </widget>
    <widget class="QWidget" name="widget_2" native="true">
     <property name="geometry">

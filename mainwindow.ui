@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="img.qrc">
-    <normaloff>:/img/fc81f9531389b9246ecb09838cdb851.jpg</normaloff>:/img/fc81f9531389b9246ecb09838cdb851.jpg</iconset>
+    <normaloff>:/img/retouch_2025011309461031.png</normaloff>:/img/retouch_2025011309461031.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="widget" native="true">

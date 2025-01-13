@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../img.qrc">
-    <normaloff>:/img/fc81f9531389b9246ecb09838cdb851.jpg</normaloff>:/img/fc81f9531389b9246ecb09838cdb851.jpg</iconset>
+    <normaloff>:/img/retouch_2025011309461031.png</normaloff>:/img/retouch_2025011309461031.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -80,6 +80,13 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+	color:white;
+	background-color: rgba(168, 90, 78, 190);
+border-radius:20px;
+}</string>
+   </property>
    <property name="text">
     <string>登录</string>
    </property>
@@ -92,6 +99,13 @@
      <width>121</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+	color:white;
+	background-color: rgba(98, 121, 153, 190);
+	border-radius:20px;
+}</string>
    </property>
    <property name="text">
     <string>注册</string>

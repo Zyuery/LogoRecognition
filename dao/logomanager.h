@@ -14,6 +14,8 @@ public:
     QList<logoModel> getLogoList(const QString &keyword);//模糊查找，辅助计算totalPage
     QList<logoModel> getLogoList(const QString &keyword,int pageNow,int pageSize);//分页查询
     QList<logoModel> getAll();//查询all
+    QString getById(QString id);
+
     //增
     void putLogoList(QList<logoModel> &);//添加logo进数据库
 

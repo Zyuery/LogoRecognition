@@ -60,6 +60,7 @@ private:
     QString url;
     QImage image;
 //辅助属性
+    QString username;//当前登录的用户
     int method;//method==0为image传参，method==1为url传参
     QNetworkAccessManager *manager;  // 网络管理器
     QNetworkReply *reply;           // 网络请求的回复指针

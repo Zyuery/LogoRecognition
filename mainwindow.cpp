@@ -111,9 +111,9 @@ MainWindow::MainWindow(QWidget *parent)
                 qDebug()<<"用户开始查询";
                 // 设置 POST 请求的参数
                 QUrlQuery postData;
-                QString image_url = ui->urlEdit->text();
+                url = ui->urlEdit->text();
                 //检验url格式*******
-                postData.addQueryItem("url", image_url);
+                postData.addQueryItem("url", url);
                 QByteArray data = postData.toString(QUrl::FullyEncoded).toUtf8();// 转换为 QByteArray
                 reply = manager->post(request, data);// 发送 POST 请求
                 // 连接请求的 finished 信号，处理返回的数据
@@ -292,6 +292,7 @@ void MainWindow::onFinished()
                 logo.setWidth(width);
                 logo.setHeight(height);
                 logo.setImageOrigin(method==0?fileName:url);
+
 
                 // 获取当前时间的QDateTime对象
                 QDateTime currentDateTime = QDateTime::currentDateTime();

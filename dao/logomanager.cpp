@@ -63,6 +63,7 @@ QList<logoModel> logoManager::getLogoList(const QString &keyword)
     return logolist;
 }
 
+
 //查：获得所有列表
 QList<logoModel> logoManager::getAll(){
     QList<logoModel> logolist;
@@ -90,7 +91,17 @@ QList<logoModel> logoManager::getAll(){
    return logolist;
 }
 
-
+//查：根据id查找
+QString logoManager::getById(QString id){
+    QSqlQuery query(db);
+    QString sql="SELECT * FROM logos where id ="+id+";";
+    query.exec(sql);
+    if(query.next()){
+        QString logoName = query.value("logo_name").toString();
+        return logoName;
+    }
+    return id;
+}
 
 //增
 void logoManager::putLogoList(QList<logoModel> &logolist)
